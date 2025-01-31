@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class MenuItem {
   final String title;
-  final String route;
+  final String subtitle;
   final String link;
   final IconData icon;
 
   const MenuItem({
     required this.title,
-    required this.route,
+    required this.subtitle,
     required this.link,
     required this.icon,
   });
@@ -17,13 +17,13 @@ class MenuItem {
 const appMenuItems = <MenuItem>[
   MenuItem(
     title: "Botones",
-    route: "Widgets de botones",
+    subtitle: "Widgets de botones",
     link: "/buttons",
     icon: Icons.smart_button_outlined,
   ),
   MenuItem(
     title: "Tarjetas",
-    route: "Widgets de tarjetas",
+    subtitle: "Un contenedor estilizado",
     link: "/cards",
     icon: Icons.credit_card,
   ),

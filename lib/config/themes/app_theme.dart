@@ -24,7 +24,11 @@ class AppTheme {
     return ThemeData(
       colorSchemeSeed: _colors[selectedColor],
       appBarTheme: AppBarTheme(
-        backgroundColor: _colors[selectedColor].withOpacity(0.4),
+        backgroundColor: _colors[selectedColor].withOpacity(0.6),
+        titleTextStyle: const TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+        ),
       ),
     );
   }
