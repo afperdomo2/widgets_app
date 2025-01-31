@@ -19,11 +19,14 @@ class HomeScreen extends StatelessWidget {
             final item = appMenuItems[index];
             return ListTile(
               title: Text(item.title),
-              subtitle: Text(item.subtitle),
+              subtitle: Text(item.route),
               leading: Icon(item.icon, color: colors.primary),
               trailing: Icon(Icons.chevron_right, color: colors.primary),
               onTap: () {
-                // TODO: Pendiente
+                Navigator.pushNamed(context, item.route);
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => const ButtonsScreen()),
+                // );
               },
             );
           },

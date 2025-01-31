@@ -29,6 +29,7 @@ class AppTheme {
           color: Colors.white,
           fontSize: 24,
         ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
     );
   }
