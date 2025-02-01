@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:widgets_app/config/menu/menu_item.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -19,15 +20,10 @@ class HomeScreen extends StatelessWidget {
             final item = appMenuItems[index];
             return ListTile(
               title: Text(item.title),
-              subtitle: Text(item.route),
+              subtitle: Text(item.subtitle),
               leading: Icon(item.icon, color: colors.primary),
               trailing: Icon(Icons.chevron_right, color: colors.primary),
-              onTap: () {
-                Navigator.pushNamed(context, item.route);
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(builder: (context) => const ButtonsScreen()),
-                // );
-              },
+              onTap: () => context.push(item.route),
             );
           },
         ));
