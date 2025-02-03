@@ -30,10 +30,13 @@ class _CardsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ...cards.map((card) => _CardType1(card: card)),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ...cards.map((card) => _CardType1(card: card)),
+          ...cards.map((card) => _CardType2(card: card)),
+        ],
+      ),
     );
   }
 }
@@ -58,6 +61,38 @@ class _CardType1 extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(card['title']),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CardType2 extends StatelessWidget {
+  const _CardType2({required this.card});
+
+  final Map<String, dynamic> card;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: const BorderSide(color: Colors.blue, width: 2),
+      ),
+      elevation: card['elevation'],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert_outlined)),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(card['title'] + ' - Outlined'),
             ),
           ],
         ),
