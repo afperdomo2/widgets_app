@@ -35,6 +35,9 @@ class _CardsView extends StatelessWidget {
         children: [
           ...cards.map((card) => _CardType1(card: card)),
           ...cards.map((card) => _CardType2(card: card)),
+          ...cards.map((card) => _CardType3(card: card)),
+          ...cards.map((card) => _CardType4(card: card)),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -96,6 +99,71 @@ class _CardType2 extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _CardType3 extends StatelessWidget {
+  const _CardType3({required this.card});
+
+  final Map<String, dynamic> card;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Card(
+      color: colors.surfaceContainerHighest,
+      elevation: card['elevation'],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert_outlined)),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(card['title'] + ' - Filled'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CardType4 extends StatelessWidget {
+  const _CardType4({required this.card});
+
+  final Map<String, dynamic> card;
+
+  @override
+  Widget build(BuildContext context) {
+    final elevation = card['elevation'];
+    return Card(
+      clipBehavior: Clip.hardEdge,
+      elevation: elevation,
+      child: Stack(
+        children: [
+          Image.network(
+            "https://picsum.photos/id/${elevation.toInt()}/600/350",
+            height: 350,
+            fit: BoxFit.cover,
+          ),
+          Align(
+            alignment: Alignment.topRight,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
+              ),
+              child: IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert_outlined)),
+            ),
+          ),
+        ],
       ),
     );
   }
