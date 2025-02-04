@@ -38,4 +38,11 @@ const appMenuItems = <MenuItem>[
     routeName: "progress_screen",
     icon: Icons.hourglass_empty,
   ),
+  MenuItem(
+    title: "Snackbars",
+    subtitle: "Mensajes emergentes",
+    route: "/snackbars",
+    routeName: "snackbars_screen",
+    icon: Icons.notifications,
+  )
 ];
