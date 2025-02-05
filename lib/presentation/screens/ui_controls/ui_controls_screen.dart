@@ -28,6 +28,7 @@ enum Transportation { car, bike, boat, plane }
 class _UiControlsViewState extends State<_UiControlsView> {
   bool isDeveloperMode = false;
   Transportation selectedTransportation = Transportation.car;
+  bool hasValidPassport = false;
 
   @override
   Widget build(BuildContext context) {
@@ -41,35 +42,48 @@ class _UiControlsViewState extends State<_UiControlsView> {
           onChanged: (value) => setState(() => isDeveloperMode = !isDeveloperMode),
         ),
         const SizedBox(height: 20),
-        Text("Selected transportation: $selectedTransportation"),
-        RadioListTile(
-          title: const Text("Car"),
-          subtitle: const Text("A four-wheeled vehicle"),
-          value: Transportation.car,
-          groupValue: selectedTransportation,
-          onChanged: (value) => setState(() => selectedTransportation = Transportation.car),
+        ExpansionTile(
+          title: const Text("Transportation"),
+          subtitle: Text(selectedTransportation.toString()),
+          initiallyExpanded: true,
+          children: [
+            RadioListTile(
+              title: const Text("Car"),
+              subtitle: const Text("A four-wheeled vehicle"),
+              value: Transportation.car,
+              groupValue: selectedTransportation,
+              onChanged: (value) => setState(() => selectedTransportation = Transportation.car),
+            ),
+            RadioListTile(
+              title: const Text("Bike"),
+              subtitle: const Text("A two-wheeled vehicle"),
+              value: Transportation.bike,
+              groupValue: selectedTransportation,
+              onChanged: (value) => setState(() => selectedTransportation = Transportation.bike),
+            ),
+            RadioListTile(
+              title: const Text("Boat"),
+              subtitle: const Text("A watercraft"),
+              value: Transportation.boat,
+              groupValue: selectedTransportation,
+              onChanged: (value) => setState(() => selectedTransportation = Transportation.boat),
+            ),
+            RadioListTile(
+              title: const Text("Plane"),
+              subtitle: const Text("An aircraft"),
+              value: Transportation.plane,
+              groupValue: selectedTransportation,
+              onChanged: (value) => setState(() => selectedTransportation = Transportation.plane),
+            )
+          ],
         ),
-        RadioListTile(
-          title: const Text("Bike"),
-          subtitle: const Text("A two-wheeled vehicle"),
-          value: Transportation.bike,
-          groupValue: selectedTransportation,
-          onChanged: (value) => setState(() => selectedTransportation = Transportation.bike),
+        const SizedBox(height: 20),
+        CheckboxListTile(
+          title: const Text("Valid passport"),
+          subtitle: Text("Has a valid passport: $hasValidPassport"),
+          value: hasValidPassport,
+          onChanged: (value) => setState(() => hasValidPassport = !hasValidPassport),
         ),
-        RadioListTile(
-          title: const Text("Boat"),
-          subtitle: const Text("A watercraft"),
-          value: Transportation.boat,
-          groupValue: selectedTransportation,
-          onChanged: (value) => setState(() => selectedTransportation = Transportation.boat),
-        ),
-        RadioListTile(
-          title: const Text("Plane"),
-          subtitle: const Text("An aircraft"),
-          value: Transportation.plane,
-          groupValue: selectedTransportation,
-          onChanged: (value) => setState(() => selectedTransportation = Transportation.plane),
-        )
       ],
     );
   }
