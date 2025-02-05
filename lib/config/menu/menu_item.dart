@@ -52,4 +52,11 @@ const appMenuItems = <MenuItem>[
     routeName: "animated_screen",
     icon: Icons.animation,
   ),
+  MenuItem(
+    title: "UI Controls + Tiles",
+    subtitle: "Serie de controles",
+    route: "/ui-controls",
+    routeName: "ui_controls_screen",
+    icon: Icons.car_rental_outlined,
+  ),
 ];
