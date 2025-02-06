@@ -54,9 +54,16 @@ const appMenuItems = <MenuItem>[
   ),
   MenuItem(
     title: "UI Controls + Tiles",
-    subtitle: "Serie de controles",
+    subtitle: "Switches, radio buttons y checkboxes",
     route: "/ui-controls",
     routeName: "ui_controls_screen",
     icon: Icons.car_rental_outlined,
+  ),
+  MenuItem(
+    title: "Tutorial",
+    subtitle: "Tutorial de la app",
+    route: "/tutorial",
+    routeName: "app_tutorial_screen",
+    icon: Icons.school,
   ),
 ];
