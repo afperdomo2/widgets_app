@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,10 +28,51 @@ final slides = <SlideInfo>[
   ),
 ];
 
-class AppTutorialScreen extends StatelessWidget {
+class AppTutorialScreen extends StatefulWidget {
   static const String name = 'app_tutorial_screen';
 
   const AppTutorialScreen({super.key});
+
+  @override
+  State<AppTutorialScreen> createState() => _AppTutorialScreenState();
+}
+
+class _AppTutorialScreenState extends State<AppTutorialScreen> {
+  final pageController = PageController();
+  bool endReached = false; // Variable para saber si se ha llegado al final de los slides
+
+  /// Inicializa el estado del widget.
+  ///
+  /// Este método se llama cuando se crea el objeto de estado. Se utiliza para
+  /// realizar cualquier configuración o inicialización necesaria para el widget.
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      final page = pageController.page ?? 0;
+      //
+      // De 0.0 a 0.4 Primer slide
+      // De 0.5 a 1.4 Segundo slide
+      // De 1.5 a 2.0 Tercer slide
+      //
+      if (page >= 1.5) {
+        setState(() => endReached = true);
+      } else {
+        setState(() => endReached = false);
+      }
+    });
+  }
+
+  /// Libera los recursos utilizados por la pantalla.
+  ///
+  /// Este método se llama cuando la pantalla se elimina del árbol de widgets
+  /// permanentemente. Sobrescribe este método para liberar cualquier recurso
+  /// que se haya asignado en el `initState` u otros métodos del ciclo de vida.
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +81,7 @@ class AppTutorialScreen extends StatelessWidget {
       body: Stack(
         children: [
           PageView(
+            controller: pageController,
             physics: const BouncingScrollPhysics(),
             children: slides.map((slide) => _CustomSlide(slide)).toList(),
           ),
@@ -50,6 +93,28 @@ class AppTutorialScreen extends StatelessWidget {
               child: const Text("Salir"),
             ),
           ),
+          Positioned(
+            bottom: 10,
+            left: 20,
+            child: Text('$endReached'),
+          ),
+          endReached
+              ? Positioned(
+                  bottom: 30,
+                  right: 30,
+                  child: FadeInRight(
+                    from: 15,
+                    delay: const Duration(milliseconds: 400),
+                    child: FilledButton(
+                      onPressed: () => setState(() {
+                        pageController.jumpToPage(0);
+                        endReached = false;
+                      }),
+                      child: const Text("Comenzar"),
+                    ),
+                  ),
+                )
+              : const SizedBox()
         ],
       ),
     );
