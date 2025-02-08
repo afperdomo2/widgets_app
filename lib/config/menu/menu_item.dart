@@ -66,4 +66,11 @@ const appMenuItems = <MenuItem>[
     routeName: "app_tutorial_screen",
     icon: Icons.school,
   ),
+  MenuItem(
+    title: "Infinite Scroll",
+    subtitle: "Listas infinitas y refresh",
+    route: "/infinite-scroll",
+    routeName: "infinite_scroll_screen",
+    icon: Icons.vertical_align_bottom,
+  ),
 ];
