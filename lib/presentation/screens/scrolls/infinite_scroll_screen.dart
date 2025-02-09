@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import "dart:math";
 
 class InfiniteScrollScreen extends StatefulWidget {
   static const String name = 'infinite_scroll_screen';
@@ -13,7 +14,7 @@ class InfiniteScrollScreen extends StatefulWidget {
 class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   final ScrollController scrollController = ScrollController();
 
-  List<int> imagesIds = List.generate(5, (index) => index);
+  List<int> imagesIds = List.generate(5, (index) => Random().nextInt(50) + index);
   bool isLoading = false;
 
   @override
@@ -35,7 +36,16 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     super.dispose();
   }
 
-  Future loadNextPage() async {
+  Future<void> refreshImages() async {
+    await Future.delayed(const Duration(seconds: 2));
+    final ramdomId = Random().nextInt(50); // ID aleatorio
+    imagesIds.clear(); // Limpiar la lista
+    imagesIds.add(ramdomId + 1); // Agregar el ID aleatorio
+    loadMoreImages(4); // Cargar 4 imágenes
+    setState(() {});
+  }
+
+  Future<void> loadNextPage() async {
     if (isLoading) return;
     setState(() => isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
@@ -52,53 +62,71 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('${imagesIds.length} images loaded'),
-      ),
+      // appBar: AppBar(
+      //   title: Text('${imagesIds.length} images loaded'),
+      // ),
       backgroundColor: Colors.black,
       body: Stack(
         children: [
           MediaQuery.removePadding(
             context: context,
             removeTop: true, // Remover el padding del SafeArea
-            child: ListView.builder(
-              controller: scrollController,
-              itemCount: imagesIds.length,
-              physics: const BouncingScrollPhysics(), // Efecto de rebote
-              itemBuilder: (context, index) {
-                return FadeInImage(
-                  fit: BoxFit.cover,
-                  width: double.infinity, // Ocupar todo el ancho
-                  height: 300,
-                  placeholder: const AssetImage("assets/images/jar-loading.gif"),
-                  image: NetworkImage("https://picsum.photos/id/${imagesIds[index]}/500/300"),
-                );
-              },
+            child: RefreshIndicator(
+              onRefresh: refreshImages,
+              strokeWidth: 2, // Grosor del indicador
+              edgeOffset: 10, // Distancia del borde para activar el refresh
+              child: ListView.builder(
+                controller: scrollController,
+                itemCount: imagesIds.length,
+                physics: const BouncingScrollPhysics(), // Efecto de rebote
+                itemBuilder: (context, index) {
+                  return FadeInImage(
+                    fit: BoxFit.cover,
+                    width: double.infinity, // Ocupar todo el ancho
+                    height: 300,
+                    placeholder: const AssetImage("assets/images/jar-loading.gif"),
+                    image: NetworkImage("https://picsum.photos/id/${imagesIds[index]}/500/300"),
+                  );
+                },
+              ),
             ),
           ),
           if (isLoading) const _AlertLoadingImages(),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          FloatingActionButton(
-            heroTag: 'scrollToTop',
-            onPressed: () => scrollController.animateTo(
-              0,
-              duration: const Duration(milliseconds: 500),
-              curve: Curves.easeInOut,
-            ),
-            child: const Icon(Icons.arrow_upward),
+      floatingActionButton: _FloatingActionButtons(scrollController: scrollController),
+    );
+  }
+}
+
+class _FloatingActionButtons extends StatelessWidget {
+  const _FloatingActionButtons({
+    required this.scrollController,
+  });
+
+  final ScrollController scrollController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        FloatingActionButton(
+          heroTag: 'scrollToTop',
+          onPressed: () => scrollController.animateTo(
+            0,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
           ),
-          const SizedBox(height: 10),
-          FloatingActionButton(
-            heroTag: 'loadMoreImages',
-            onPressed: () => context.pop(),
-            child: const Icon(Icons.arrow_back),
-          )
-        ],
-      ),
+          child: const Icon(Icons.arrow_upward),
+        ),
+        const SizedBox(height: 10),
+        FloatingActionButton(
+          heroTag: 'loadMoreImages',
+          onPressed: () => context.pop(),
+          child: const Icon(Icons.arrow_back),
+        )
+      ],
     );
   }
 }
