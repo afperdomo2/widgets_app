@@ -53,7 +53,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$imagesIds'),
+        title: Text('${imagesIds.length} images loaded'),
       ),
       backgroundColor: Colors.black,
       body: Stack(
@@ -79,9 +79,25 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
           if (isLoading) const _AlertLoadingImages(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.pop(),
-        child: const Icon(Icons.arrow_back),
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: 'scrollToTop',
+            onPressed: () => scrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            ),
+            child: const Icon(Icons.arrow_upward),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: 'loadMoreImages',
+            onPressed: () => context.pop(),
+            child: const Icon(Icons.arrow_back),
+          )
+        ],
       ),
     );
   }
