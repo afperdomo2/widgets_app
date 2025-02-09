@@ -36,6 +36,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     super.dispose();
   }
 
+  /// Refresca la lista de imágenes obteniendo nuevos datos.
   Future<void> refreshImages() async {
     await Future.delayed(const Duration(seconds: 2));
     final ramdomId = Random().nextInt(50); // ID aleatorio
@@ -45,18 +46,51 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     setState(() {});
   }
 
+  /// Carga la siguiente página de datos de forma asíncrona.
   Future<void> loadNextPage() async {
     if (isLoading) return;
     setState(() => isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
     loadMoreImages();
     setState(() => isLoading = false);
+    moveSrollToBottom();
   }
 
+  /// Carga más imágenes en la vista de desplazamiento.
+  ///
+  /// Este método obtiene una cantidad especificada de imágenes adicionales y las agrega
+  /// a la lista actual de imágenes. El número predeterminado de imágenes a cargar
+  /// es 5 si no se especifica ninguna cantidad.
+  ///
+  /// [amount] La cantidad de imágenes a cargar. Por defecto es 5 si no se proporciona.
   void loadMoreImages([int amount = 5]) {
     final lastImageId = imagesIds.last;
     imagesIds.addAll(List.generate(amount, (index) => lastImageId + index + 1));
     if (amount > 0) setState(() {}); // Actualizar la UI
+  }
+
+  /// Mueve la posición del scroll al final del widget desplazable (Si el scroll está cerca del final).
+  /// Este método se puede usar para desplazarse programáticamente hasta el final de la lista o contenido.
+  void moveSrollToBottom() {
+    // isNearBottom: Indica si el scroll está cerca del final
+    final isNearBottom = scrollController.position.pixels + 150 < scrollController.position.maxScrollExtent;
+    if (isNearBottom) return;
+    // targetScrollPosition: Posición final del scroll (más 150 pixeles para mostrar el último elemento)
+    final targetScrollPosition = scrollController.position.maxScrollExtent + 150;
+    scrollController.animateTo(
+      targetScrollPosition,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  /// Mueve la posición del scroll al inicio del widget desplazable.
+  void moveSrollToTop() {
+    scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -94,39 +128,22 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
           if (isLoading) const _AlertLoadingImages(),
         ],
       ),
-      floatingActionButton: _FloatingActionButtons(scrollController: scrollController),
-    );
-  }
-}
-
-class _FloatingActionButtons extends StatelessWidget {
-  const _FloatingActionButtons({
-    required this.scrollController,
-  });
-
-  final ScrollController scrollController;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        FloatingActionButton(
-          heroTag: 'scrollToTop',
-          onPressed: () => scrollController.animateTo(
-            0,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FloatingActionButton(
+            heroTag: 'scrollToTop',
+            onPressed: moveSrollToTop,
+            child: const Icon(Icons.arrow_upward),
           ),
-          child: const Icon(Icons.arrow_upward),
-        ),
-        const SizedBox(height: 10),
-        FloatingActionButton(
-          heroTag: 'loadMoreImages',
-          onPressed: () => context.pop(),
-          child: const Icon(Icons.arrow_back),
-        )
-      ],
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            heroTag: 'loadMoreImages',
+            onPressed: () => context.pop(),
+            child: const Icon(Icons.arrow_back),
+          )
+        ],
+      ),
     );
   }
 }
