@@ -14,6 +14,7 @@ class _SideMenuState extends State<SideMenu> {
 
   @override
   Widget build(BuildContext context) {
+    // final hasNotch = MediaQuery.of(context).padding.top > 0;
     final colors = Theme.of(context).colorScheme;
 
     return NavigationDrawer(
@@ -34,7 +35,22 @@ class _SideMenuState extends State<SideMenu> {
             ),
           ),
         ),
-        ...appMenuItems.map((item) {
+        Padding(
+          padding: const EdgeInsets.fromLTRB(28, 10, 16, 10),
+          child: Text("Main", style: TextStyle(color: colors.primary, fontSize: 14)),
+        ),
+        ...appMenuItems.sublist(0, 3).map((item) {
+          return NavigationDrawerDestination(
+            icon: Icon(item.icon, color: colors.primary),
+            label: Text(item.title),
+          );
+        }),
+        Divider(color: colors.primary, thickness: 0.5, indent: 16, endIndent: 16),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(28, 10, 16, 10),
+          child: Text("Others", style: TextStyle(color: colors.primary, fontSize: 14)),
+        ),
+        ...appMenuItems.sublist(4).map((item) {
           return NavigationDrawerDestination(
             icon: Icon(item.icon, color: colors.primary),
             label: Text(item.title),
