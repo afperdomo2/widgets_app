@@ -3,14 +3,16 @@ import 'package:go_router/go_router.dart';
 import 'package:widgets_app/config/menu/menu_item.dart';
 
 class SideMenu extends StatefulWidget {
-  const SideMenu({super.key});
+  final GlobalKey<ScaffoldState> scaffoldKey;
+
+  const SideMenu({super.key, required this.scaffoldKey});
 
   @override
   State<SideMenu> createState() => _SideMenuState();
 }
 
 class _SideMenuState extends State<SideMenu> {
-  int navDrawerIndex = 0;
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +20,15 @@ class _SideMenuState extends State<SideMenu> {
     final colors = Theme.of(context).colorScheme;
 
     return NavigationDrawer(
-      selectedIndex: navDrawerIndex,
+      selectedIndex: selectedIndex,
       onDestinationSelected: (int index) {
-        // final item = appMenuItems[index];
-        // context.go(item.routeName);
-        setState(() => navDrawerIndex = index);
+        setState(() => selectedIndex = index);
+        final item = appMenuItems[index];
+        context.pushNamed(item.routeName);
+        widget.scaffoldKey.currentState!.openEndDrawer(); // Cierra el Drawer al seleccionar un item del menú
       },
       children: [
-        Text('${navDrawerIndex}'),
+        Text('${selectedIndex}'),
         DrawerHeader(
           decoration: BoxDecoration(color: colors.primary),
           child: Center(
