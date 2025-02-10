@@ -14,14 +14,17 @@ class CounterScreen extends ConsumerWidget {
     final bool isDarkMode = ref.watch(isDarkModeProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Riverpod Counter $isDarkMode"), actions: [
-        IconButton(
-          icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
-          onPressed: () {
-            ref.read(isDarkModeProvider.notifier).state = !isDarkMode;
-          },
-        )
-      ]),
+      appBar: AppBar(
+        title: Text("Riverpod Counter $isDarkMode"),
+        actions: [
+          IconButton(
+            icon: Icon(isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            onPressed: () {
+              ref.read(isDarkModeProvider.notifier).state = !isDarkMode;
+            },
+          )
+        ],
+      ),
       body: Center(
         child: Text("Valor: $clickCounter", style: Theme.of(context).textTheme.titleLarge),
       ),

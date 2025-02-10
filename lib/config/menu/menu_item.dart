@@ -80,4 +80,11 @@ const appMenuItems = <MenuItem>[
     routeName: "infinite_scroll_screen",
     icon: Icons.vertical_align_bottom,
   ),
+  MenuItem(
+    title: "Theme Changer",
+    subtitle: "Cambia el tema de la app",
+    route: "/theme-changer",
+    routeName: "theme_changer_screen",
+    icon: Icons.palette,
+  ),
 ];
