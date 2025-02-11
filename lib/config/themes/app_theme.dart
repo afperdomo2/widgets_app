@@ -37,4 +37,23 @@ class AppTheme {
       ),
     );
   }
+
+  /// Crea una copia de este [AppTheme] pero con los campos dados reemplazados con los nuevos valores.
+  ///
+  /// Este método te permite crear una nueva instancia de [AppTheme] con algunas propiedades
+  /// modificadas mientras mantienes el resto de las propiedades sin cambios.
+  ///
+  /// Los parámetros son opcionales y si no se proporcionan, se usarán las propiedades
+  /// correspondientes de la instancia actual.
+  ///
+  /// Devuelve una nueva instancia de [AppTheme] con las propiedades actualizadas.
+  AppTheme copyWith({
+    int? selectedColor,
+    bool? isDarkMode,
+  }) {
+    return AppTheme(
+      selectedColor: selectedColor ?? this.selectedColor,
+      isDarkMode: isDarkMode ?? this.isDarkMode,
+    );
+  }
 }
